@@ -1,0 +1,9 @@
+listOfT:
+  # type: number
+  $defs:
+    content:
+      $anchor: T
+      # not: true
+  type: array
+  items:
+    $ref: '#T'

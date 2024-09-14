@@ -1,0 +1,56 @@
+openapi: 3.1.0
+info:
+  title: BEAN API
+  description: >
+    This API standardizes the communication between a server and client
+    compliant with 
+
+    the BEAN (Budgeting and Expenses App for Newbies) project.
+  version: 1.0.0
+paths:
+  /budgets:
+    get:
+      summary: Get all budgeting data.
+      description: TODO
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: api/schemas/schemas.yaml#/budget
+  /budgets/{budgetId}:
+    put:
+      summary: Get budgeting data for a specific entry.
+      parameters:
+        - name: budgetId
+          in: path
+          required: true
+          description: The id of the budget to retrieve
+          schema:
+            $ref: "#/components/schemas/expenseCategory"
+  /expenses:
+    get:
+      summary: Get all expense data.
+      description: TODO
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+  /expenses/{expenseId}:
+    put:
+      summary: Get expense data for a specific entry.
+      parameters:
+        - name: expenseId
+          in: path
+          required: true
+          description: The id of the expense to retrieve
+          schema:
+            type: string
+            
+components:
+  schemas:
+    $ref: api/schemas/schemas.yaml#/

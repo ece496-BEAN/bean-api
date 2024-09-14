@@ -1,0 +1,16 @@
+beanObject:
+  type: object
+  required:
+    - id
+  properties:
+    id:
+      type: string
+      format: uuid
+money:
+  type: object
+  required:
+    - cents
+  properties:
+    cents:
+      type: integer
+      minimum: 0

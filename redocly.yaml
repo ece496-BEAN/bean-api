@@ -1,0 +1,20 @@
+# See https://redocly.com/docs/cli/configuration/
+
+extends:
+  - recommended
+
+apis: 
+  main:
+    root: ./api.yaml
+  
+rules:
+  # A sample custom rule. Read more about rules: https://redocly.com/docs/cli/rules/
+  no-empty-servers: off
+
+theme:
+  openapi:
+    generateCodeSamples:
+      languages:
+        - lang: curl
+        - lang: Node.js
+        - lang: Python

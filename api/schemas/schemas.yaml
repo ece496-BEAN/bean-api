@@ -1,0 +1,81 @@
+group:
+  type: object
+  allOf: 
+    -  $ref: primitives.yaml/#/beanObject
+  required:
+    - name
+    - children
+  properties:
+    name:
+      type: string
+    description:
+      type: string
+    parent:
+      $ref: '#/group'
+    children:
+      type: array
+      items: 
+        $ref: 'primitives.yaml/#/beanObject'
+budget:
+  type: object
+  required: 
+    - monthlyAllocation
+  allOf: 
+    - $ref: 'primitives.yaml/#/beanObject'
+  properties:
+    monthlyAllocation: 
+      $ref: 'primitives.yaml/#/money'
+category:
+  type: object
+  required:
+    - name
+    - group
+    - transactions
+  allOf:
+    - $ref: 'primitives.yaml/#/beanObject'
+  properties:
+    name:
+      type: string
+    description:
+      type: string
+    group:
+      $ref: '#/group'
+    transactions:
+      type: array
+      items: 
+        $ref: '#/transaction'
+expenseCategory:
+  type: object
+  required:
+    - budget
+  allOf:
+    - $ref: '#/category'
+  properties:
+    budget: 
+      $ref: '#/budget'
+incomeCategory: 
+  type: object
+  allOf:
+    - $ref: '#/category'
+transaction:
+  type: object
+  allOf:
+    - $ref: 'primitives.yaml/#/beanObject'
+  required:
+    - amount
+    - category
+    - transactionGroup
+  properties:
+    amount:
+      $ref: 'primitives.yaml/#/money'
+    description:
+      type: string
+    category: 
+      $ref: '#/category'
+    transactionGroup:
+      type: string
+
+  
+
+  
+
