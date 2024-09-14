@@ -1,0 +1,16 @@
+genericGroup:
+  allOf: 
+    - $ref: primitives.yaml/#/beanObject
+  required:
+    - name
+    - children
+  properties:
+    name: 
+      type: string
+    description:
+      type: string
+    parent:
+      $ref: 'primitives.yaml/#/beanObject'
+    children:
+      type: array
+      

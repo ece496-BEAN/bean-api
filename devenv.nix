@@ -13,6 +13,9 @@
     bun.enable = true;
     bun.install.enable = true;
   };
+  pre-commit.hooks = {
+    commitizen.enable = true;
+  };
 
   enterShell = ''
   '';

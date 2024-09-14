@@ -1,81 +1,103 @@
-group:
-  type: object
-  allOf: 
-    -  $ref: primitives.yaml/#/beanObject
-  required:
-    - name
-    - children
-  properties:
-    name:
-      type: string
-    description:
-      type: string
-    parent:
-      $ref: '#/group'
-    children:
-      type: array
-      items: 
-        $ref: 'primitives.yaml/#/beanObject'
 budget:
-  type: object
-  required: 
-    - monthlyAllocation
-  allOf: 
-    - $ref: 'primitives.yaml/#/beanObject'
+  allOf:
+    - $ref: primitives.yaml/#/beanObject
   properties:
-    monthlyAllocation: 
-      $ref: 'primitives.yaml/#/money'
+    monthlyAllocation:
+      $ref: primitives.yaml/#/money
+  required:
+    - monthlyAllocation
 category:
-  type: object
+  allOf:
+    - $ref: primitives.yaml/#/beanObject
   required:
     - name
     - group
     - transactions
-  allOf:
-    - $ref: 'primitives.yaml/#/beanObject'
   properties:
-    name:
-      type: string
     description:
       type: string
     group:
-      $ref: '#/group'
+      $ref: primitives.yaml/#/beanObject
+    name:
+      type: string
     transactions:
-      type: array
-      items: 
+      items:
         $ref: '#/transaction'
-expenseCategory:
-  type: object
+      type: array
+categoryGroup:
+  allOf:
+    - $ref: groups.yaml/#/genericGroup
+  properties:
+    children:
+      items:
+        anyOf:
+          # Arbitrary nesting
+          - $ref: '#/category'
+          - $ref: '#/categoryGroup'
+documentScan:
+  allOf: 
+    -  $ref: primitives.yaml/#/beanObject
   required:
-    - budget
+    - file
+    - ocrResult
+  properties:
+    file: 
+      $ref: primitives.yaml/#/beanObject
+    ocrResult:
+      type: string
+transactionGroup:
+  allOf:
+    - $ref: groups.yaml/#/genericGroup
+  required:
+    - date
+    - transactionParty
+    - source
+  properties:
+    children:
+      items:
+          # Only single layer allowed, in contrast to categoryGroup!
+         $ref: '#/transaction'
+    date:
+      type: string
+      format: date
+    transactionParty:
+      $ref: '#/transactionParty'
+    source:
+      oneOf:
+        - const: "manual"
+        - $ref: primitives.yaml/#/beanObject
+transactionParty:
+  allOf:
+    - $ref: primitives.yaml/#/beanObject
+  required:
+    - partyName
+  properties:
+    partyName:
+      type: string
+expenseCategory:
   allOf:
     - $ref: '#/category'
+  required:
+    - budget
   properties:
-    budget: 
+    budget:
       $ref: '#/budget'
-incomeCategory: 
-  type: object
+incomeCategory:
   allOf:
     - $ref: '#/category'
 transaction:
-  type: object
   allOf:
-    - $ref: 'primitives.yaml/#/beanObject'
+    - $ref: primitives.yaml/#/beanObject
+  properties:
+    amount:
+      $ref: primitives.yaml/#/money
+    category:
+      $ref: '#/category'
+    description:
+      type: string
+    transactionGroup:
+      type: string
   required:
     - amount
     - category
     - transactionGroup
-  properties:
-    amount:
-      $ref: 'primitives.yaml/#/money'
-    description:
-      type: string
-    category: 
-      $ref: '#/category'
-    transactionGroup:
-      type: string
-
-  
-
-  
-
