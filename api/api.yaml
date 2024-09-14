@@ -1,0 +1,234 @@
+openapi: 3.1.0
+info:
+  title: BEAN API
+  description: >
+    This API standardizes the communication between a server and client
+    compliant with 
+    the BEAN (Budgeting and Expenses App for Newbies) project.
+  version: 1.0.0
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+security: 
+  -  ApiKeyAuth: []
+paths:
+  /budgets:
+    get:
+      summary: Get all budgeting data.
+      description: TODO
+      operationId: getBudgets
+      tags: 
+        -  budgets
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: schemas/schemas.yaml#/expenseCategory
+        '400':
+          description: The provided parameters are incorrect
+          content:
+            text:
+              schema: 
+                const: TODO
+    post: 
+      summary: Create a budget.
+      description: TODO
+      operationId: createBudget
+      tags: 
+        -  budgets
+      requestBody: 
+        content: 
+          application/json:
+            schema: 
+              $ref: schemas/schemas.yaml#/expenseCategory
+        required: true
+      responses: 
+        '201':
+          description: Null response
+        '400':
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: schemas/errors.yaml#/genericError
+    delete: 
+      summary: Delete all budgets.
+      operationId: deleteAllBudgets
+      tags:
+        - budgets
+      responses: 
+        '204':
+          description: Budgets deleted
+        '400':
+          description: Unexpected error
+          content: 
+            application/json:
+              schema: 
+                $ref: schemas/errors.yaml#/genericError
+        
+  /budgets/{budgetId}:
+    get:
+      summary: Get a budget by id.
+      operationId: getBudgetById
+      tags: 
+        -  budgets
+      parameters:
+        - name: budgetId
+          in: path
+          required: true
+          description: The id of the budget to retrieve
+          schema:
+            $ref: "schemas/primitives.yaml/#/beanObject"
+      responses: 
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: schemas/schemas.yaml#/expenseCategory
+        '400':
+          description: Unexpected error
+          content: 
+            application/json:
+              schema: 
+                $ref: schemas/errors.yaml#/genericError
+    delete: 
+      summary: Delete a budget by id.
+      operationId: deleteBudgetById
+      tags: 
+        -  budgets
+      parameters:
+        - name: budgetId
+          in: path
+          required: true
+          description: The id of the budget to retrieve
+          schema:
+            $ref: "schemas/primitives.yaml/#/beanObject"
+      responses: 
+        '204':
+          description: Budget Deleted
+        '400':
+          description: Unexpected error
+          content: 
+            application/json:
+              schema: 
+                $ref: schemas/errors.yaml#/genericError
+  /expenses:
+    get:
+      summary: Get all expense data.
+      description: TODO
+      operationId: getExpenses
+      tags: 
+        -  expenses
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: schemas/schemas.yaml#/transactionGroup
+        '400':
+          description: The provided parameters are incorrect
+          content:
+            text:
+              schema: 
+                const: TODO
+    post: 
+      summary: Create an expense.
+      description: TODO
+      operationId: createExpense
+      tags: 
+        -  expenses
+      requestBody: 
+        content: 
+          application/json:
+            schema: 
+              $ref: schemas/schemas.yaml#/transactionGroup
+        required: true
+      responses: 
+        '201':
+          description: Null response
+        '400':
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: schemas/errors.yaml#/genericError
+    delete: 
+      summary: Delete all expenses.
+      operationId: deleteAllExpenses
+      tags:
+        - expenses
+      responses: 
+        '204':
+          description: Expenses deleted
+        '400':
+          description: Unexpected error
+          content: 
+            application/json:
+              schema: 
+                $ref: schemas/errors.yaml#/genericError
+        
+  /expenses/{expenseId}:
+    get:
+      summary: Get an expense by id.
+      operationId: getExpenseById
+      tags: 
+        -  expenses
+      parameters:
+        - name: expenseId
+          in: path
+          required: true
+          description: The id of the expense to retrieve
+          schema:
+            $ref: "schemas/primitives.yaml/#/beanObject"
+      responses: 
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: schemas/schemas.yaml#/transactionGroup
+        '400':
+          description: Unexpected error
+          content: 
+            application/json:
+              schema: 
+                $ref: schemas/errors.yaml#/genericError
+    delete: 
+      summary: Delete an expense by id.
+      operationId: deleteExpenseById
+      tags: 
+        -  expenses
+      parameters:
+        - name: expenseId
+          in: path
+          required: true
+          description: The id of the expense to retrieve
+          schema:
+            $ref: "schemas/primitives.yaml/#/beanObject"
+      responses: 
+        '204':
+          description: Expense Deleted
+        '400':
+          description: Unexpected error
+          content: 
+            application/json:
+              schema: 
+                $ref: schemas/errors.yaml#/genericError
+
+            
+components:
+  # securitySchemes: 
+  #   ApiKeyAuth:        # arbitrary name for the security scheme
+  #     type: apiKey
+  #     in: header       # can be "header", "query" or "cookie"
+  #     name: X-API-KEY  # name of the header, query parameter or cookie
+  schemas:
+    $ref: schemas/schemas.yaml#

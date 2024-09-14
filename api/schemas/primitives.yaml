@@ -4,8 +4,10 @@ beanObject:
     - id
   properties:
     id:
+      description: A UUID.
       type: string
       format: uuid
+  description: An object with an ID.
 money:
   type: object
   required:
@@ -14,3 +16,5 @@ money:
     cents:
       type: integer
       minimum: 0
+      description: Value in cents.
+  description: Monetary value.

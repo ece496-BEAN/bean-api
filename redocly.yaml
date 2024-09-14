@@ -5,7 +5,7 @@ extends:
 
 apis: 
   main:
-    root: ./api.yaml
+    root: ./api/api.yaml
   
 rules:
   # A sample custom rule. Read more about rules: https://redocly.com/docs/cli/rules/

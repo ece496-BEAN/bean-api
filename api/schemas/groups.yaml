@@ -7,10 +7,15 @@ genericGroup:
   properties:
     name: 
       type: string
+      description: The name of the group.
     description:
       type: string
+      description: A user-friendly description of the group.
     parent:
       $ref: 'primitives.yaml/#/beanObject'
+      description: The parent group - for nested group structures.
     children:
       type: array
+      description: The children belonging to this group.
+  description: Generic definition of a group of objects.
       

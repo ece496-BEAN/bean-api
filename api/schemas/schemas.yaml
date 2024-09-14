@@ -1,29 +1,36 @@
 budget:
   allOf:
     - $ref: primitives.yaml/#/beanObject
+  required:
+    - monthlyAllocation
   properties:
     monthlyAllocation:
       $ref: primitives.yaml/#/money
-  required:
-    - monthlyAllocation
+      description: How much can be spent each month.
+  description: A spending allocation.
 category:
   allOf:
     - $ref: primitives.yaml/#/beanObject
   required:
     - name
-    - group
     - transactions
   properties:
     description:
       type: string
+      description: A user-friendly description.
     group:
       $ref: primitives.yaml/#/beanObject
+      description: The group that this category belongs to.
     name:
       type: string
+      description: A user-friendly name of this category.
     transactions:
       items:
         $ref: '#/transaction'
       type: array
+      description: A list of transactions belonging to this category.
+  description: A common grouping between transactions.
+
 categoryGroup:
   allOf:
     - $ref: groups.yaml/#/genericGroup
@@ -34,6 +41,30 @@ categoryGroup:
           # Arbitrary nesting
           - $ref: '#/category'
           - $ref: '#/categoryGroup'
+      description: Categories or sub-groups belonging to this group.
+  description: A group of categories.
+expenseCategory:
+  allOf:
+    - $ref: '#/category'
+  required:
+    - budget
+  properties:
+    budget:
+      $ref: '#/budget'
+      description: How much can be spent in this category.
+  description: |
+    A category describing an (usually) outflow of money.
+    This is usually negative but can be positive in cases like a refund or reimbursement. 
+    The distinction between an expense and income is subjective and is left to the user.
+    e.g., "groceries".
+incomeCategory:
+  allOf:
+    - $ref: '#/category'
+  description: |
+    A category describing an (usually) inflow of money.
+    This is usually positive but can be negative in cases like taxes. 
+    The distinction between an expense and income is subjective and is left to the user.
+    e.g., “salary”, “side-hustle”, “dividends”.
 documentScan:
   allOf: 
     -  $ref: primitives.yaml/#/beanObject
@@ -43,8 +74,33 @@ documentScan:
   properties:
     file: 
       $ref: primitives.yaml/#/beanObject
+      description: A reference to the actual file.
     ocrResult:
       type: string
+      description: The text extracted by OCR.
+  description: A scan of a document, such as a receipt photo.
+
+transaction:
+  allOf:
+    - $ref: primitives.yaml/#/beanObject
+  required:
+    - amount
+    - category
+    - transactionGroup
+  properties:
+    amount:
+      $ref: primitives.yaml/#/money
+      description: The value of the transaction.
+    category:
+      $ref: '#/category'
+      description: The category that this transaction is classified as.
+    description:
+      type: string
+      description: What the transaction was for. e.g., "mangos"
+    transactionGroup:
+      type: string
+      description: What group this transaction belongs to.
+  description: A single inflow/outflow of money.
 transactionGroup:
   allOf:
     - $ref: groups.yaml/#/genericGroup
@@ -57,15 +113,20 @@ transactionGroup:
       items:
           # Only single layer allowed, in contrast to categoryGroup!
          $ref: '#/transaction'
+      description: Transactions belonging to this group.
     date:
       type: string
       format: date
+      description: When this transaction occurred.
     transactionParty:
       $ref: '#/transactionParty'
+      description: With whom the transaction occurred with.
     source:
       oneOf:
         - const: "manual"
         - $ref: primitives.yaml/#/beanObject
+      description: Where the transaction data came from.
+  description: A grouping of transactions, providing more data about the transactions.
 transactionParty:
   allOf:
     - $ref: primitives.yaml/#/beanObject
@@ -74,30 +135,4 @@ transactionParty:
   properties:
     partyName:
       type: string
-expenseCategory:
-  allOf:
-    - $ref: '#/category'
-  required:
-    - budget
-  properties:
-    budget:
-      $ref: '#/budget'
-incomeCategory:
-  allOf:
-    - $ref: '#/category'
-transaction:
-  allOf:
-    - $ref: primitives.yaml/#/beanObject
-  properties:
-    amount:
-      $ref: primitives.yaml/#/money
-    category:
-      $ref: '#/category'
-    description:
-      type: string
-    transactionGroup:
-      type: string
-  required:
-    - amount
-    - category
-    - transactionGroup
+  description: The party with whom the transaction occurred with. e.g., “Walmart” for expenses, “UofT Pay” for income.

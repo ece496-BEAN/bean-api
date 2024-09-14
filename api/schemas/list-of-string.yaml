@@ -1,6 +1,0 @@
-listOfString:
-  $defs:
-    string-items:
-      $dynamicAnchor: T
-      type: string
-  $ref: ./list-of-t.yaml#/listOfT
